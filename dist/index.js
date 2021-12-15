@@ -4744,8 +4744,7 @@ async function run (){
         const url = core.getInput('url-jira')
         const basic_auth = core.getInput('basic-auth')
         if(url && basic_auth){        
-            await getDateDeploy(url, basic_auth)
-            console.log("depois data deploy:", dateDeploy)
+            await getDateDeploy(url, basic_auth)            
             await validationDateDeploy()
         }else{
             core.setFailed("invalid url or basic_auth")
@@ -4763,13 +4762,9 @@ async function getDateDeploy(url, basic_auth){
                 Authorization: basic_auth,
             }
         }).then(function(response){            
-            dateDeploy = response.data.fields.customfield_10476
-            console.log("response:", response)            
-            console.log("fields:", response.data.fields.customfield_10476)            
+            dateDeploy = response.data.fields.customfield_10476            
         })
-    }catch(error){
-        console.log("error response:", error.response)
-        console.log("error test:", error)
+    }catch(error){        
         core.setFailed("Erro ao buscar data de deploy")
     }
 }
