@@ -4768,6 +4768,8 @@ async function getDateDeploy(url, basic_auth){
             console.log("fields:", response.fields)            
         })
     }catch(error){
+        console.log("error response:", error.response)
+        console.log("error test:", error)
         core.setFailed("Erro ao buscar data de deploy")
     }
 }
