@@ -26,7 +26,9 @@ async function getDateDeploy(url, basic_auth){
                 Authorization: basic_auth,
             }
         }).then(function(response){            
-            dateDeploy = response.fields.customfield_10476            
+            dateDeploy = response.fields.customfield_10476
+            console.log("response:", response)            
+            console.log("fields:", response.fields)            
         })
     }catch(error){
         core.setFailed("Erro ao buscar data de deploy")
