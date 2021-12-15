@@ -26,9 +26,9 @@ async function getDateDeploy(url, basic_auth){
                 Authorization: basic_auth,
             }
         }).then(function(response){            
-            dateDeploy = response.fields.customfield_10476
+            dateDeploy = response.data.fields.customfield_10476
             console.log("response:", response)            
-            console.log("fields:", response.fields)            
+            console.log("fields:", response.data.fields.customfield_10476)            
         })
     }catch(error){
         console.log("error response:", error.response)
