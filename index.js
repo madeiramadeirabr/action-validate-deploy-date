@@ -38,12 +38,10 @@ async function getDateDeploy(url, basic_auth){
     try{
         let dateNow = new Date()
         dateDeploy = new Date(dateDeploy).toLocaleDateString('pt-BR', {
-            hour: '2-digit',
-            minute:'2-digit'
+            hour: '2-digit'
         })
         dateNow = new Date(dateNow).toLocaleDateString('pt-BR', {
-            hour: '2-digit',
-            minute:'2-digit'
+            hour: '2-digit'
         })
 
         if (dateNow == dateDeploy) {       
