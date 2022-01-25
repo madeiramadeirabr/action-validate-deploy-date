@@ -1,4 +1,4 @@
-![img](https://github.com/madeiramadeirabr/action-validate-deploy-date/blob/production/.github/Action_Validate_Date_Deploy.svg)
+![img](https://github.com/madeiramadeirabr/action-validate-deploy-date/blob/staging/img/action-validate-deploy-date.svg)
 # action-validate-deploy-date
 
 ## Descrição:
