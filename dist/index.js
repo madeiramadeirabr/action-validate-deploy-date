@@ -11570,7 +11570,9 @@ async function validationDateDeploy(){
     try{
         let dateNow = new Date()
         dateDeploy = new Date(dateDeploy)
-        if(dateNow <= dateDeploy){
+        let dateInterval = new Date(dateDeploy)
+        dateInterval.setHours(dateInterval.getHours()+1)
+        if(dateNow >= dateDeploy && dateNow <= dateInterval){
             core.setOutput("result", "Data do deploy é igual a data atual")    
         }else {
             core.setFailed("Data de deploy não está correta")
