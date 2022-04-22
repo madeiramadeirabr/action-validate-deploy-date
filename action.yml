@@ -1,8 +1,8 @@
 name: 'Action Validate Deploy Date'
 description: 'Validation Deploy'
 inputs: 
-  url-jira:
-    description: 'url jira'
+  domain:
+    description: 'domain jira'
     required: true
   basic-auth:
     description: 'jira authentication'
@@ -11,5 +11,5 @@ outputs:
   result:
     description: 'finished process'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
