@@ -27,8 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     name: check date deploy
     steps:      
-        uses: madeiramadeirabr/action-validate-deploy-date@v1
+        uses: madeiramadeirabr/action-validate-deploy-date@v3.0.0
         with:
-          url-jira: "url_jira"
+          domain: "<domain>"
           basic-auth: ${{ secrets.GLOBALS_SRE_BASIC_AUTH_JIRA }}
 ```
