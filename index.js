@@ -8,7 +8,12 @@ async function run (){
     try{
         const domain = core.getInput('domain')
         const basic_auth = core.getInput('basic-auth')
-        if(domain && basic_auth){        
+        if(domain && basic_auth){    
+            if(isHotfix()){
+                core.setOutput("result", "Aprovação realizada por mudança hotfix!")    
+                return true
+            }
+            
             let serviceDesk = await getDataIssue(domain, basic_auth)
             if(serviceDesk != null){
                 await getDateDeploy(domain, serviceDesk,basic_auth)       
@@ -17,11 +22,27 @@ async function run (){
                 core.setFailed("Não foi estabelecida data para deploy para essa GMUD!")
                 return
             }
+
         }else{
             core.setFailed("O parâmetro domain ou basic_auth é inválido!")
         }
     }catch(error){
         core.setFailed("Parâmetros inválidos")
+    }
+}
+
+function isHotfix(){
+    try{
+        if (github.context.payload.hasOwnProperty("pull_request") &&
+            github.context.payload.pull_request.hasOwnProperty("title")){
+            let titlePR = github.context.payload.pull_request.title
+            let hotfixDefault =  /hotfix:[\s\S]+|hotfix\(.+\):[\s\S]+/
+            return hotfixDefault.test(titlePR) ? true : false
+        }
+        return false
+    }catch{
+        core.setFailed("Essa action só funcionará em uma pull request!")
+        return false
     }
 }
 
