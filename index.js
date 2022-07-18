@@ -36,7 +36,7 @@ function isHotfix(){
         if (github.context.payload.hasOwnProperty("pull_request") &&
             github.context.payload.pull_request.hasOwnProperty("title")){
             let titlePR = github.context.payload.pull_request.title
-            let hotfixDefault =  /hotfix:[\s\S]+|hotfix\(.+\):[\s\S]+/
+            let hotfixDefault =  /hotfix:[\s\S]+|hotfix\(.+\):[\s\S]+|\(hotfix\)+\:.*/
             return hotfixDefault.test(titlePR) ? true : false
         }
         return false
