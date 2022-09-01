@@ -1,0 +1,18 @@
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: action-validate-deploy-date
+  description: |
+    Github Action que valida se a data/hora de um deploy agendado pela GMUD é igual a data/hora atual.
+  annotations:
+    github.com/project-slug: madeiramadeirabr/action-validate-deploy-date
+    sonarqube.org/project-key: madeiramadeirabr/action-validate-deploy-date
+    backstage.io/techdocs-ref: dir:.
+  tags:
+  - javascript
+  - github-action
+spec:
+  type: library
+  lifecycle: production
+  owner: team-platform-services
