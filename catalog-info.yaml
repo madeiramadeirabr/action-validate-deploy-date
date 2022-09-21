@@ -8,7 +8,6 @@ metadata:
   annotations:
     github.com/project-slug: madeiramadeirabr/action-validate-deploy-date
     sonarqube.org/project-key: madeiramadeirabr/action-validate-deploy-date
-    backstage.io/techdocs-ref: dir:.
   tags:
   - javascript
   - github-action
