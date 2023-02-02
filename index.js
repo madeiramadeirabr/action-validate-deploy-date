@@ -7,7 +7,7 @@ var dateDeploy = null
 async function run (){
     if(isBot(github))
         return
-        
+
     try{
         const domain = core.getInput('domain')
         const basic_auth = core.getInput('basic-auth')
@@ -102,8 +102,7 @@ async function validationDateDeploy(){
 }
 
 function isBot(github){
-    console.log(validateObjectLoginsender(github))
-    if(!validateObjectLoginsender(github)){
+    if(!validateObjectLoginSender(github)){
         return false
     }
 
@@ -116,7 +115,7 @@ function isBot(github){
     
 }
 
-function validateObjectLoginsender(github){
+function validateObjectLoginSender(github){
     if (!github.hasOwnProperty('context'))
         return false
 
