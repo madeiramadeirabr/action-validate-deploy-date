@@ -5,6 +5,9 @@ const github = require('@actions/github')
 
 var dateDeploy = null
 async function run (){
+    if(isBot(github))
+        return
+        
     try{
         const domain = core.getInput('domain')
         const basic_auth = core.getInput('basic-auth')
@@ -96,6 +99,37 @@ async function validationDateDeploy(){
     }catch(error){
         core.setFailed("Erro ao validar data de deploy")
     }
+}
+
+function isBot(github){
+    console.log(validateObjectLoginsender(github))
+    if(!validateObjectLoginsender(github)){
+        return false
+    }
+
+    const loginSender = github.context.payload.sender.login
+
+    if (loginSender.includes("[bot]")){
+        console.log(`Essa ação foi executada pelo bot ${loginSender} e não irá gerar GMUD!`)
+        return true
+    }
+    
+}
+
+function validateObjectLoginsender(github){
+    if (!github.hasOwnProperty('context'))
+        return false
+
+    if (!github.context.hasOwnProperty('payload'))
+        return false
+
+    if (!github.context.payload.hasOwnProperty('sender'))
+        return false
+        
+    if (!github.context.payload.sender.hasOwnProperty('login'))
+        return false
+
+    return true
 }
 
 run()
