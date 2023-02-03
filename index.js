@@ -3,7 +3,7 @@ const core = require('@actions/core')
 const axios = require('axios')
 const github = require('@actions/github')
 
-var dateDeploy = null
+var deployDate = null
 async function run (){
     if(isBot(github))
         return
@@ -19,8 +19,8 @@ async function run (){
             
             let serviceDesk = await getDataIssue(domain, basic_auth)
             if(serviceDesk != null){
-                await getDateDeploy(domain, serviceDesk,basic_auth)       
-                await validationDateDeploy()
+                await getdeployDate(domain, serviceDesk,basic_auth)       
+                await validationdeployDate()
             }else{
                 core.setFailed("Não foi estabelecida data para deploy para essa GMUD!")
                 return
@@ -59,7 +59,7 @@ async function getDataIssue(domain,  basic_auth){
                 }
             }).then((response)=>{
                 if(!Object.keys(response.data.fields.issuelinks).length == 0){
-                    dateDeploy = response.data.fields.customfield_10476
+                    deployDate = response.data.fields.customfield_10476
                     return response.data.fields.issuelinks[0].outwardIssue.key       
                 }
                 return null
@@ -71,27 +71,27 @@ async function getDataIssue(domain,  basic_auth){
     }
 }
 
-async function getDateDeploy(domain, serviceDesk ,basic_auth){
+async function getdeployDate(domain, serviceDesk ,basic_auth){
     try{
         await axios.get(`https://${domain}.atlassian.net/rest/api/3/issue/${serviceDesk}`, {
             headers: {
                 Authorization: basic_auth,
             }
         }).then(function(response){            
-            dateDeploy = response.data.fields.customfield_10476
+            deployDate = response.data.fields.customfield_10476
         })
     }catch(error){        
         core.setFailed("Erro ao buscar data de deploy")
     }
 }
 
-async function validationDateDeploy(){
+async function validationdeployDate(){
     try{
         let dateNow = new Date()
-        dateDeploy = new Date(dateDeploy)
-        let dateInterval = new Date(dateDeploy)
+        deployDate = new Date(deployDate)
+        let dateInterval = new Date(deployDate)
         dateInterval.setHours(dateInterval.getHours()+3)
-        if(dateNow >= dateDeploy && dateNow <= dateInterval){
+        if(dateNow >= deployDate && dateNow <= dateInterval){
             core.setOutput("result", "Data do deploy é igual a data atual")    
         }else {
             core.setFailed("Data de deploy não está correta")
@@ -109,7 +109,7 @@ function isBot(github){
     const loginSender = github.context.payload.sender.login
 
     if (loginSender.includes("[bot]")){
-        console.log(`Essa ação foi executada pelo bot ${loginSender} e não irá gerar GMUD!`)
+        core.setFailed(`Essa ação foi executada pelo bot ${loginSender} e não irá gerar GMUD!`)
         return true
     }
     
