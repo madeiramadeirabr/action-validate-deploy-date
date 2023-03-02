@@ -112,6 +112,7 @@ async function validationdeployDate(serviceDesk){
     try{
         if(deployDate == null){
             core.setFailed(`A data de deploy ainda não foi definida na GMUD ${serviceDesk}!`)
+            return
         }
 
         const dateNow = new Date()
