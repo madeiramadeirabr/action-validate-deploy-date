@@ -17,10 +17,10 @@ async function run (){
                 return true
             }
             
-            let serviceDesk = await getDataIssue(domain, basic_auth)
+            const serviceDesk = await getDataIssue(domain, basic_auth)
             if(serviceDesk != null){
                 await getdeployDate(domain, serviceDesk,basic_auth)       
-                await validationdeployDate()
+                await validationdeployDate(serviceDesk)
             }else{
                 core.setFailed("Não foi estabelecida data para deploy para essa GMUD!")
                 return
@@ -57,10 +57,10 @@ async function getDataIssue(domain,  basic_auth){
                 headers: {
                     Authorization: basic_auth,
                 }
-            }).then((response)=>{
+            }).then(async (response)=>{
                 if(!Object.keys(response.data.fields.issuelinks).length == 0){
                     deployDate = response.data.fields.customfield_10476
-                    return response.data.fields.issuelinks[0].outwardIssue.key       
+                    return await findPtech(response.data.fields.issuelinks )      
                 }
                 return null
             }).catch((error)=>{        
@@ -69,6 +69,29 @@ async function getDataIssue(domain,  basic_auth){
     }catch(error){
         core.setFailed("Essa action só funcionará em uma pull request!")
     }
+}
+
+async function findPtech(issue_keys){
+    for (let index in issue_keys){
+        if(isPtech(issue_keys[index])){
+            return issue_keys[index].outwardIssue.key
+        }
+    }
+}
+
+function isPtech(index){
+    if (!Object.hasOwnProperty.bind(index)('outwardIssue')){
+        return false
+    }
+    if (!Object.hasOwnProperty.bind(index.outwardIssue)('key')){
+        return false
+    }
+
+    if (index.outwardIssue.key.split('-')[0] != 'PTECH'){
+        return false
+    }    
+   
+    return true
 }
 
 async function getdeployDate(domain, serviceDesk ,basic_auth){
@@ -85,9 +108,13 @@ async function getdeployDate(domain, serviceDesk ,basic_auth){
     }
 }
 
-async function validationdeployDate(){
+async function validationdeployDate(serviceDesk){
     try{
-        let dateNow = new Date()
+        if(deployDate == null){
+            core.setFailed(`A data de deploy ainda não foi definida na GMUD ${serviceDesk}!`)
+        }
+
+        const dateNow = new Date()
         deployDate = new Date(deployDate)
         let dateInterval = new Date(deployDate)
         dateInterval.setHours(dateInterval.getHours()+3)
